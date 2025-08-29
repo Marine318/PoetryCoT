@@ -1,0 +1,43 @@
+### model
+model_name_or_path: /root/autodl-tmp/LLaMA-Factory/Model_pre/InternVL3-8B-hf
+trust_remote_code: true
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+freeze_vision_tower: true
+freeze_multi_modal_projector: true
+freeze_language_model: false
+deepspeed: examples/deepspeed/ds_z3_config.json
+
+### dataset
+dataset: industrial_qa_cot
+media_dir: /root/autodl-tmp/LLaMA-Factory
+template: intern_vl
+cutoff_len: 2048
+max_samples: 400000
+overwrite_cache: true
+preprocessing_num_workers: 16
+dataloader_num_workers: 4
+
+### output
+output_dir: /root/autodl-tmp/LLaMA-Factory/saves_cot/internvl3_8b-full
+logging_steps: 10
+save_steps: 3000
+plot_loss: true
+overwrite_output_dir: true
+save_only_model: false
+report_to: none
+# choices: [none, wandb, tensorboard, swanlab, mlflow]
+
+### train
+per_device_train_batch_size: 4
+gradient_accumulation_steps: 2
+learning_rate: 1.0e-5
+num_train_epochs: 3.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+bf16: true
+ddp_timeout: 36000
+resume_from_checkpoint: null
